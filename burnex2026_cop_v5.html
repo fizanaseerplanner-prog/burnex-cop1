@@ -1,0 +1,371 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#080c11;--s1:#0f1923;--s2:#141f2b;--border:#1d2d3d;--red:#e03c3c;--amber:#c98a0a;--green:#22a05a;--blue:#2680e8;--purple:#7c4ddb;--teal:#0d9b96;--text:#ccdae8;--muted:#506070;--bright:#eaf4ff;}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;}
+.wall{background:var(--bg);padding:10px;display:flex;flex-direction:column;gap:8px;}
+.topbar{display:flex;align-items:center;background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:10px 16px;gap:14px;}
+.tb-logo{font-size:18px;font-weight:500;color:var(--bright);line-height:1.1;flex-shrink:0;}
+.tb-logo span{color:var(--blue);}
+.tb-badges{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.badge-drill{border:1.5px solid var(--amber);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700;color:var(--amber);line-height:1.2;text-align:center;}
+.badge-active{background:#0d3d1a;border:1.5px solid var(--green);border-radius:5px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--green);text-align:center;}
+.tb-divider{width:1px;background:var(--border);align-self:stretch;flex-shrink:0;}
+.tb-center{flex:1;text-align:center;}
+.tb-time{font-size:28px;font-weight:500;color:var(--bright);font-variant-numeric:tabular-nums;line-height:1;}
+.tb-meta{font-size:10px;color:var(--muted);margin-top:3px;}
+.tb-right{display:flex;align-items:center;gap:16px;flex-shrink:0;}
+.tb-stat{text-align:center;}
+.tb-num{font-size:22px;font-weight:500;line-height:1;}
+.tb-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-top:1px;}
+.alert-strip{background:#130d00;border:1px solid var(--amber);border-radius:6px;padding:7px 13px;display:flex;align-items:center;gap:9px;}
+.apulse{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;animation:ap 1.8s infinite;}
+@keyframes ap{0%,100%{opacity:1;}50%{opacity:.2;}}
+.atext{font-size:11px;color:var(--amber);font-weight:500;}
+.deact{background:#0a1a0f;border:1px solid var(--green);border-radius:6px;padding:7px 14px;display:flex;align-items:center;justify-content:space-between;}
+.deact-l{display:flex;align-items:center;gap:9px;}
+.deact-icon{width:22px;height:22px;border-radius:50%;background:#0f2a1a;border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--green);flex-shrink:0;}
+.deact-main{font-size:11px;font-weight:500;color:var(--green);}
+.deact-sub{font-size:10px;color:#3a8a55;margin-top:1px;}
+.deact-r{font-size:10px;color:#3a8a55;text-align:right;}
+.mgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.dtile{background:var(--s1);border-radius:9px;overflow:hidden;display:flex;flex-direction:column;}
+.dtile.ok{border:1px solid #122a1e;}
+.dtile.mid{border:1px solid #2e2000;}
+.dtile.hot{border:1px solid #3a1010;animation:hg 2.2s infinite;}
+@keyframes hg{0%,100%{border-color:#3a1010;}50%{border-color:var(--red);}}
+.dth{padding:8px 10px 6px;border-bottom:1px solid var(--border);}
+.dtname{font-size:13px;font-weight:500;color:var(--bright);}
+.dtdir{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.3;}
+.dtbody{padding:8px 10px;flex:1;}
+.dtstatus{font-size:9px;font-weight:500;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:6px;}
+.s-hot{background:#2e0e0e;color:var(--red);}
+.s-mid{background:#221600;color:var(--amber);}
+.s-ok{background:#0a2018;color:var(--green);}
+.dtm{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px;}
+.dm{background:var(--s2);border-radius:4px;padding:4px 6px;}
+.dm-n{font-size:16px;font-weight:500;line-height:1;}
+.dm-l{font-size:8px;color:var(--muted);margin-top:1px;text-transform:uppercase;letter-spacing:.4px;}
+.dm.r .dm-n{color:var(--red);}
+.dm.a .dm-n{color:var(--amber);}
+.dm.g .dm-n{color:var(--green);}
+.dinjects{display:flex;flex-direction:column;gap:3px;}
+.di{background:var(--s2);border-radius:3px;padding:3px 7px;border-left:2px solid var(--border);font-size:10px;color:var(--text);line-height:1.3;cursor:pointer;}
+.di:hover{background:#1a2a3a;}
+.di.r{border-left-color:var(--red);}
+.di.a{border-left-color:var(--amber);}
+.di.g{border-left-color:var(--green);}
+.di.b{border-left-color:var(--blue);}
+.di-type{font-size:8px;color:var(--muted);margin-bottom:1px;text-transform:uppercase;letter-spacing:.3px;}
+.dtfoot{padding:4px 10px;background:var(--s2);border-top:1px solid var(--border);display:flex;justify-content:space-between;}
+.dtfl{font-size:8px;color:var(--muted);}
+.dtfv{font-size:8px;color:var(--text);}
+.sbs-row{display:grid;grid-template-columns:1fr 1fr 1fr 1.2fr;gap:8px;}
+.sbs-panel{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:9px 11px;overflow:hidden;}
+.sbs-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;font-weight:500;display:flex;align-items:center;gap:5px;}
+.nne-item{display:flex;align-items:flex-start;gap:5px;margin-bottom:5px;}
+.nne-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.nne-t{font-size:10px;color:var(--text);line-height:1.3;}
+.nne-d{font-size:9px;color:var(--muted);}
+.feedscroll{overflow-y:auto;max-height:130px;}
+.fitem{display:flex;gap:5px;padding:4px 0;border-bottom:1px solid var(--border);}
+.ftime{font-size:8px;color:var(--muted);flex-shrink:0;padding-top:1px;font-variant-numeric:tabular-nums;}
+.fbar{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;}
+.ftext{font-size:10px;color:var(--text);line-height:1.3;}
+.bbar{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;}
+.bcard{background:var(--s1);border:1px solid var(--border);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:8px;}
+.bicon{width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:500;}
+.bval{font-size:16px;font-weight:500;line-height:1;}
+.blbl{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.bcard.r .bval,.bcard.r .bicon{color:var(--red);}.bcard.r .bicon{background:#1e0808;}
+.bcard.b .bval,.bcard.b .bicon{color:var(--blue);}.bcard.b .bicon{background:#051428;}
+.bcard.g .bval,.bcard.g .bicon{color:var(--green);}.bcard.g .bicon{background:#071a10;}
+.bcard.p .bval,.bcard.p .bicon{color:var(--purple);}.bcard.p .bicon{background:#110828;}
+.bcard.t .bval,.bcard.t .bicon{color:var(--teal);}.bcard.t .bicon{background:#041614;}
+.bcard.a .bval,.bcard.a .bicon{color:var(--amber);}.bcard.a .bicon{background:#1a1000;}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:200;}
+.modal{background:var(--s1);border:1px solid var(--blue);border-radius:10px;padding:16px;max-width:440px;width:90%;max-height:80vh;overflow-y:auto;}
+.mtitle{font-size:13px;font-weight:500;color:var(--bright);margin-bottom:10px;}
+.mrow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.mk{color:var(--muted);}
+.mv{color:var(--text);text-align:right;max-width:63%;word-break:break-word;}
+.maction{background:#08200f;border:1px solid var(--green);border-radius:4px;padding:7px 9px;font-size:11px;color:#4dbf78;margin-top:7px;line-height:1.5;}
+.mnotes{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5;}
+.sbtns{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap;}
+.sbtn{font-size:10px;border:1px solid var(--border);background:var(--s2);color:var(--text);border-radius:4px;padding:4px 10px;cursor:pointer;}
+.sbtn:hover{background:var(--border);}
+.sbtn.act{background:#051a38;border-color:var(--blue);color:#79c0ff;}
+.cbtn{float:right;background:transparent;border:none;color:var(--muted);font-size:15px;cursor:pointer;}
+</style>
+
+<h2 class="sr-only">BURNEX 2026 Common Operating Picture — Region 1 exercise wall</h2>
+<div class="wall" id="app">
+
+  <div class="topbar">
+    <div class="tb-logo">BURN<span>EX</span><br>2026</div>
+    <div class="tb-badges">
+      <div class="badge-drill">DRILL · DRILL · DRILL</div>
+      <div class="badge-active">EXERCISE ACTIVE</div>
+    </div>
+    <div class="tb-divider"></div>
+    <div class="tb-center">
+      <div class="tb-time" id="clock">--:--:--</div>
+      <div class="tb-meta">Thursday, April 16, 2026 &nbsp;·&nbsp; Region 1 &nbsp;·&nbsp; DOC Director: AJ Johnson &nbsp;·&nbsp; Exercise Controller: Derek Kantar</div>
+    </div>
+    <div class="tb-divider"></div>
+    <div class="tb-right">
+      <div class="tb-stat"><div class="tb-num" style="color:var(--red)" id="t-open">--</div><div class="tb-lbl">Open</div></div>
+      <div class="tb-stat"><div class="tb-num" style="color:var(--green)" id="t-done">--</div><div class="tb-lbl">Done</div></div>
+      <div class="tb-stat"><div class="tb-num" style="color:var(--bright)">47</div><div class="tb-lbl">Total</div></div>
+    </div>
+  </div>
+
+  <div class="alert-strip">
+    <div class="apulse"></div>
+    <div class="atext" id="alert-text">Loading...</div>
+  </div>
+
+  <div class="deact">
+    <div class="deact-l">
+      <div class="deact-icon">&#10003;</div>
+      <div>
+        <div class="deact-main">DEACTIVATED — Level 2 stood down at 12:00 &nbsp;·&nbsp; EndEx confirmed &nbsp;·&nbsp; Hot wash complete</div>
+        <div class="deact-sub">BURNEX 2026 Region 1 &nbsp;·&nbsp; AAR due November 15, 2026</div>
+      </div>
+    </div>
+    <div class="deact-r">DOC Director: AJ Johnson &nbsp;|&nbsp; Sr Controller: Derek Kantar</div>
+  </div>
+
+  <div class="mgrid" id="mgrid"></div>
+
+  <div class="sbs-row">
+    <div class="sbs-panel" id="panel-now"></div>
+    <div class="sbs-panel" id="panel-next"></div>
+    <div class="sbs-panel" id="panel-emerging"></div>
+    <div class="sbs-panel" id="panel-feed"></div>
+  </div>
+
+  <div class="bbar" id="bbar"></div>
+</div>
+<div id="mc"></div>
+
+<script>
+const INJECTS=[
+{n:"1",t:"8:00",at:"8:00",desc:"Open Exercise Team/Channels",ctrl:"Exercise Members",mode:"MS Teams",recip:"All",actions:"Exercise channels opened",notes:"",status:"Completed",district:"HQ",type:"comms"},
+{n:"2",t:"8:30",at:"8:30",desc:"StartEx — Begin Exercise",ctrl:"Exercise Director",mode:"Email/Everbridge",recip:"All",actions:"StartEx announced via Everbridge",notes:"",status:"Completed",district:"HQ",type:"comms"},
+{n:"3",t:"9:00",at:"9:00",desc:"District Generator List Status Report",ctrl:"DOC Logistics",mode:"Email",recip:"All 4 Districts",actions:"D2: 200 on standby. D1: 27 portable. D4: 4 available.",notes:"Complete",status:"Completed",district:"Multi",type:"logistics"},
+{n:"4",t:"8:40",at:"8:48",desc:"Facility Impact Map Request",ctrl:"DOC GIS",mode:"Email",recip:"DOC Ops / All Districts",actions:"AGOL link provided in Planning Section channel",notes:"Completed",status:"Completed",district:"HQ",type:"gis"},
+{n:"5",t:"8:35",at:"8:45",desc:"Coordinate with EOCs on ExPlan Objectives",ctrl:"DOC Operations",mode:"Email",recip:"All 4 Districts",actions:"D1/D2/D3/D4 objectives confirmed. HQ DOC 0839.",notes:"D2 activated 0806",status:"Completed",district:"Multi",type:"ops"},
+{n:"6",t:"9:05",at:"8:54",desc:"D1 — Activate EOC",ctrl:"DOC Operations",mode:"Email",recip:"D1 EOC",actions:"D1 activated at 08:54",notes:"Completed",status:"Completed",district:"D1",type:"ops"},
+{n:"7",t:"10:30",at:"10:32",desc:"PIO — Prepare media briefing",ctrl:"DOC Director",mode:"Email",recip:"DOC PIO",actions:"Media briefing prepared and distributed",notes:"",status:"Completed",district:"HQ",type:"pio"},
+{n:"8",t:"8:50",at:"8:55",desc:"D2 — Exercise Emergency Contracting",ctrl:"DOC Operations",mode:"Email",recip:"D2 EOC",actions:"D2 EOC status received.",notes:"Complete",status:"Completed",district:"D2",type:"ops"},
+{n:"9",t:"10:40",at:"10:43",desc:"DOC Ops — Report on Road Closures",ctrl:"DOC Operations",mode:"Email",recip:"HQ Comms",actions:"HQ Comms update sent at 1050",notes:"Completed",status:"Completed",district:"HQ",type:"closure"},
+{n:"10",t:"8:55",at:"8:55",desc:"PIO — Review PIO Checklist",ctrl:"DOC Director",mode:"Email",recip:"DOC PIO",actions:"District PIOs contacted. Successful media day.",notes:"",status:"Completed",district:"HQ",type:"pio"},
+{n:"11",t:"10:45",at:"10:45",desc:"D3 — Position checklist status update",ctrl:"DOC Operations",mode:"Email",recip:"D3 EOC",actions:"Ops handing over to planning",notes:"Complete",status:"Completed",district:"D3",type:"ops"},
+{n:"12",t:"8:30",at:"9:00",desc:"Coordinate with all Districts on Objectives",ctrl:"DOC Operations",mode:"Email",recip:"All 4 Districts",actions:"D1/D2 at 0907. D3/D4 at 0923.",notes:"Complete",status:"Completed",district:"Multi",type:"ops"},
+{n:"13",t:"10:00",at:"10:03",desc:"D4 — Activate drones / remote monitoring",ctrl:"DOC Operations",mode:"Email",recip:"D4 EOC",actions:"D4 live stream active to DOC",notes:"Completed",status:"Completed",district:"D4",type:"drone"},
+{n:"14",t:"9:05",at:"9:07",desc:"D1 — Test Position Checklist",ctrl:"DOC Operations",mode:"Email",recip:"D1 EOC",actions:"Sent 0856. Not all districts use DxxEOC emails.",notes:"",status:"Completed",district:"D1",type:"ops"},
+{n:"15",t:"9:05",at:"9:07",desc:"D2 — Exercise Emergency Closure",ctrl:"DOC Operations",mode:"Email",recip:"D2 EOC",actions:"All closures received from D2.",notes:"Complete",status:"Completed",district:"D2",type:"closure"},
+{n:"16",t:"9:10",at:"9:10",desc:"Radio/Comms — Request live video feed",ctrl:"DOC Director",mode:"Email",recip:"Radio/Comms",actions:"D4 live feed at 1033. Closed 1049. D1 not activating SATCOM.",notes:"",status:"Completed",district:"HQ",type:"satcom"},
+{n:"17",t:"9:05",at:"9:02",desc:"D3 — Activate EOC",ctrl:"DOC Operations",mode:"Email",recip:"D3 EOC",actions:"D3 EOC activated",notes:"Completed",status:"Completed",district:"D3",type:"ops"},
+{n:"18",t:"9:40",at:"9:41",desc:"Modal — Transit services update in fire areas",ctrl:"DOC Modals",mode:"Email",recip:"Transit Rep",actions:"Contacted freight liaison. Coordinating on evac routes.",notes:"",status:"In Progress",district:"HQ",type:"modal"},
+{n:"19",t:"8:45",at:"8:54",desc:"Activate CT SATCOM 3 at META",ctrl:"DOC Operations",mode:"Email",recip:"HQ Radio Comms",actions:"D4 live feed active. D1 not activating.",notes:"Completed",status:"Completed",district:"HQ",type:"satcom"},
+{n:"20",t:"8:30",at:"8:37",desc:"OSDR — Reporting Code distributed",ctrl:"DOC Director",mode:"Email",recip:"Finance/Admin",actions:"Reporting code BURNEX26EX distributed",notes:"Complete",status:"Completed",district:"HQ",type:"finance"},
+{n:"21",t:"9:10",at:"9:10",desc:"HQ Traffic Ops — Road data for Modal Chief",ctrl:"Traffic Operations",mode:"Email",recip:"DOC Modals",actions:"Districts contacted. Data and maps provided.",notes:"",status:"Completed",district:"HQ",type:"ops"},
+{n:"22",t:"10:15",at:"10:17",desc:"D1 — Emergency Closure Hwy 101",ctrl:"DOC Operations",mode:"Email",recip:"D1 EOC",actions:"Full closure Hwy 101 PM 10.886/R5.688",notes:"",status:"Completed",district:"D1",type:"closure"},
+{n:"23",t:"9:15",at:"9:16",desc:"Activate CRD at ORC Lab/Warehouse",ctrl:"DOC Operations",mode:"Email",recip:"HQ Radio Comms",actions:"Radio section not playing. More info needed.",notes:"Complete",status:"Completed",district:"HQ",type:"satcom"},
+{n:"24",t:"9:25",at:"9:25",desc:"Modal — WESTDOG airport impacts",ctrl:"DOC Modals",mode:"Email",recip:"Aero Rep",actions:"Contacted WESTDOG. Coordinating on impacts.",notes:"",status:"In Progress",district:"HQ",type:"modal"},
+{n:"25",t:"10:15",at:"10:17",desc:"Deploy Sat Phones",ctrl:"DOC Operations",mode:"Email",recip:"HQ Radio Comms",actions:"Complete 1025.",notes:"",status:"Completed",district:"HQ",type:"satcom"},
+{n:"26",t:"9:05",at:"9:07",desc:"Modal — Goods movement road data",ctrl:"DOC Modals",mode:"Email",recip:"Traffic Ops / Goods Movement",actions:"PFSM closures reviewed. Info provided.",notes:"",status:"Completed",district:"HQ",type:"modal"},
+{n:"27",t:"9:45",at:"9:45",desc:"HQ Traffic Ops — Policy info / validate districts",ctrl:"Traffic Operations",mode:"Email",recip:"All District TO reps",actions:"Info distributed to districts.",notes:"Completed",status:"Completed",district:"Multi",type:"ops"},
+{n:"28",t:"9:15",at:"9:16",desc:"Modal — Rail operator impacts in fire areas",ctrl:"DOC Modals",mode:"Email",recip:"Rail Rep",actions:"Contacted Amtrak, BNSF, Districts. Info relayed.",notes:"",status:"Completed",district:"HQ",type:"modal"},
+{n:"29",t:"9:50",at:"9:50",desc:"Cal-Cards and Emergency Travel Cards",ctrl:"DOC Finance/Admin",mode:"Email",recip:"All 4 Districts",actions:"Only emergency travel cards for emergencies — not CalCards.",notes:"Complete",status:"Completed",district:"Multi",type:"finance"},
+{n:"30",t:"9:45",at:"9:45",desc:"HQ Traffic Ops — Inter-district coordination",ctrl:"Traffic Operations",mode:"Email",recip:"All District TO reps",actions:"Info sent to multiple districts.",notes:"Complete",status:"Completed",district:"Multi",type:"ops"},
+{n:"31",t:"10:05",at:"10:05",desc:"D2 — Task Order and Damage Assessments",ctrl:"DOC Operations",mode:"Email",recip:"D2 EOC",actions:"Major damage info sent from DOC Ops to D2.",notes:"Complete",status:"Completed",district:"D2",type:"ops"},
+{n:"32",t:"10:00",at:"10:00",desc:"Executive Coordination confirmed",ctrl:"DOC Director",mode:"Email",recip:"Sr Controller (Derek Kantar)",actions:"Info distributed to DOC. No current needs.",notes:"",status:"Completed",district:"HQ",type:"ops"},
+{n:"33",t:"12:00",at:"11:45",desc:"Department Update / SitRep released",ctrl:"DOC Planning",mode:"Email",recip:"All Players",actions:"SitRep finalized and distributed at 11:45.",notes:"Completed",status:"Completed",district:"HQ",type:"sitrep"},
+{n:"34",t:"7:50",at:"9:02",desc:"External agencies unable to use MS Teams",ctrl:"IT / DOC Director",mode:"MSEL Inject",recip:"DOC Director",actions:"Web browser workaround implemented for guest access.",notes:"Hot wash flagged — key improvement area",status:"Completed",district:"HQ",type:"comms"},
+{n:"35",t:"9:55",at:"9:28",desc:"Cal OES requests liaison to planning intel unit",ctrl:"DOC Director",mode:"MSEL Inject",recip:"DOC Director",actions:"Joe Smith assigned and on scene at 1100.",notes:"",status:"Completed",district:"HQ",type:"ops"},
+{n:"36",t:"9:45",at:"9:50",desc:"Cal OES SOC requests EEI for IAP",ctrl:"DOC Director",mode:"MSEL Inject",recip:"DOC Planning",actions:"List produced by planning per SOP.",notes:"Complete",status:"Completed",district:"HQ",type:"sitrep"},
+{n:"37",t:"10:20",at:"10:20",desc:"Staff impacted by fire?",ctrl:"SIM Cell",mode:"MSEL Inject",recip:"DOC Director",actions:"All Caltrans personnel evacuated.",notes:"Complete",status:"Completed",district:"HQ",type:"ops"},
+{n:"38",t:"11:00",at:"10:22",desc:"Alternate freight routes",ctrl:"DOC Director",mode:"MSEL Inject",recip:"Modal",actions:"D1–D4 providing alternate route info.",notes:"Mark closed routes. Provide alternatives.",status:"In Progress",district:"Multi",type:"modal"},
+{n:"39",t:"10:30",at:"10:24",desc:"Weather update 1045",ctrl:"DOC Director",mode:"MSEL Inject",recip:"NWS",actions:"NWS update provided to DOC.",notes:"",status:"In Progress",district:"HQ",type:"weather"},
+{n:"40",t:"11:15",at:"11:16",desc:"DWR + USGS — Shasta Lake ops coordination",ctrl:"DOC Director",mode:"MSEL Inject",recip:"Cord/Comms",actions:"DWR + USGS POCs contacted.",notes:"Complete",status:"Completed",district:"HQ",type:"ops"},
+{n:"41",t:"10:28",at:"10:29",desc:"GIS information delay — server migration",ctrl:"DOC Director",mode:"MSEL Inject",recip:"DOC Director",actions:"GIS update provided via VCC text channel.",notes:"Completed",status:"Completed",district:"HQ",type:"gis"},
+{n:"42",t:"10:50",at:"10:33",desc:"Follow-up: GIS delay resolution",ctrl:"DOC Director",mode:"MSEL Inject",recip:"GIS",actions:"Facility impact map created. Link in Planning Section.",notes:"Updated 11:05",status:"Completed",district:"HQ",type:"gis"},
+{n:"43",t:"11:00",at:"10:36",desc:"Potable water trucks — D1",ctrl:"DOC Director",mode:"MSEL Inject",recip:"D1 DOE",actions:"Sent to D1. Completed at 1110.",notes:"",status:"Completed",district:"D1",type:"logistics"},
+{n:"44",t:"10:55",at:"10:57",desc:"NOAA weather — updated spot forecast",ctrl:"DOC Director",mode:"MSEL Inject",recip:"DOC Director",actions:"New slide deck. Update at 1045. Next at 1145.",notes:"",status:"In Progress",district:"HQ",type:"weather"},
+{n:"45",t:"10:55",at:"10:57",desc:"D4 SATCOM check",ctrl:"DOC Director",mode:"MSEL Inject",recip:"D4",actions:"HQ DOC Ops pushed Teams mtg to HQ Radio + CTSATCOM 4.",notes:"Completed",status:"Completed",district:"D4",type:"satcom"},
+{n:"46",t:"11:00",at:"11:00",desc:"Cal OES requests Caltrans SitRep at 11:45",ctrl:"DOC Director",mode:"MSEL Inject",recip:"All",actions:"SitRep finalized and distributed at 11:45.",notes:"No response from D3",status:"Completed",district:"Multi",type:"sitrep"},
+{n:"47",t:"10:11",at:"10:11",desc:"D1 info request from HQ",ctrl:"DOC Director",mode:"MSEL Inject",recip:"D1 Finance",actions:"Confirmed with planning. Answered D1.",notes:"Completed",status:"Completed",district:"D1",type:"finance"},
+];
+
+const DIST_INFO={
+  HQ:{label:"HQ DOC",sub:"Director: AJ Johnson\nOps: Michelle Trotter / Tracy Callahan"},
+  D1:{label:"District 1",sub:"Kyra Cohen\nTrevor Goff · Lisa Abeles"},
+  D2:{label:"District 2",sub:"Brandon Trent\nRick Kuykendall"},
+  D3:{label:"District 3",sub:"Adrian Maza\nChad Sanchez"},
+  D4:{label:"District 4",sub:"Winfield Lai"},
+};
+const STCOL={Completed:"var(--green)","In Progress":"var(--blue)",Acknowledged:"var(--amber)",New:"var(--red)"};
+
+let injects=[...INJECTS];
+let feed=[];
+
+function pushFeed(msg,col){
+  const n=new Date();
+  const t=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+  feed.unshift({t,msg,col:col||'var(--blue)'});
+  if(feed.length>50)feed.pop();
+}
+
+function showModal(n){
+  const inj=injects.find(i=>i.n===n);if(!inj)return;
+  document.getElementById('mc').innerHTML=`<div class="mbg" onclick="if(event.target===this)document.getElementById('mc').innerHTML=''">
+    <div class="modal">
+      <button class="cbtn" onclick="document.getElementById('mc').innerHTML=''">&#10005;</button>
+      <div class="mtitle">#${inj.n} — ${inj.desc}</div>
+      <div class="mrow"><span class="mk">District</span><span class="mv">${inj.district}</span></div>
+      <div class="mrow"><span class="mk">Controller</span><span class="mv">${inj.ctrl}</span></div>
+      <div class="mrow"><span class="mk">Recipient</span><span class="mv">${inj.recip}</span></div>
+      <div class="mrow"><span class="mk">Mode</span><span class="mv">${inj.mode}</span></div>
+      <div class="mrow"><span class="mk">Scheduled</span><span class="mv">${inj.t}</span></div>
+      <div class="mrow"><span class="mk">Actual</span><span class="mv">${inj.at||'—'}</span></div>
+      <div class="mrow"><span class="mk">Status</span><span class="mv" style="color:${STCOL[inj.status]}">${inj.status}</span></div>
+      ${inj.actions?`<div class="maction">Action taken: ${inj.actions}</div>`:''}
+      ${inj.notes?`<div class="mnotes">Notes: ${inj.notes}</div>`:''}
+      <div class="sbtns">${['New','Acknowledged','In Progress','Completed'].map(s=>`<button class="sbtn${inj.status===s?' act':''}" onclick="setSt('${inj.n}','${s}')">${s}</button>`).join('')}</div>
+    </div>
+  </div>`;
+}
+function setSt(n,s){
+  const inj=injects.find(i=>i.n===n);if(!inj)return;
+  inj.status=s;
+  pushFeed('#'+n+' ('+inj.district+'): '+inj.desc.slice(0,40)+(inj.desc.length>40?'...':'')+' → '+s,STCOL[s]);
+  document.getElementById('mc').innerHTML='';
+  render();
+}
+
+function stCls(s){return s==='In Progress'?'b':s==='Acknowledged'?'a':s==='Completed'?'g':'r';}
+
+function renderTile(distKey){
+  const info=DIST_INFO[distKey]||{label:distKey,sub:''};
+  const own=injects.filter(i=>i.district===distKey);
+  const open=own.filter(i=>i.status!=='Completed');
+  const done=own.filter(i=>i.status==='Completed');
+  const st=open.length>=2?'hot':open.length>=1?'mid':'ok';
+  const stLabel=open.length>=2?'Needs attention':open.length>=1?'1 open':'All clear';
+  const stCl=open.length>=2?'s-hot':open.length>=1?'s-mid':'s-ok';
+  const numCl=open.length>=2?'r':open.length>=1?'a':'g';
+  const topInj=own.slice(0,3);
+  const subLines=info.sub.split('\n');
+  return`<div class="dtile ${st}">
+    <div class="dth">
+      <div class="dtname">${info.label}</div>
+      ${subLines.map(l=>`<div class="dtdir">${l}</div>`).join('')}
+    </div>
+    <div class="dtbody">
+      <span class="dtstatus ${stCl}">${stLabel}</span>
+      <div class="dtm">
+        <div class="dm ${numCl}"><div class="dm-n">${open.length}</div><div class="dm-l">Open</div></div>
+        <div class="dm g"><div class="dm-n">${done.length}</div><div class="dm-l">Done</div></div>
+      </div>
+      <div class="dinjects">
+        ${topInj.map(inj=>`<div class="di ${stCls(inj.status)}" onclick="showModal('${inj.n}')">
+          <div class="di-type">${inj.type} · #${inj.n}</div>
+          ${inj.desc.slice(0,44)}${inj.desc.length>44?'...':''}
+        </div>`).join('')}
+        ${own.length>3?`<div style="font-size:9px;color:var(--muted);padding:2px 0;cursor:pointer;" onclick="showAll('${distKey}')">+${own.length-3} more</div>`:''}
+      </div>
+    </div>
+    <div class="dtfoot">
+      <span class="dtfl">Last ctrl</span>
+      <span class="dtfv">${own.length?own[own.length-1].ctrl.slice(0,22):'—'}</span>
+    </div>
+  </div>`;
+}
+
+function showAll(d){
+  const rel=injects.filter(i=>i.district===d);
+  document.getElementById('mc').innerHTML=`<div class="mbg" onclick="if(event.target===this)document.getElementById('mc').innerHTML=''">
+    <div class="modal" style="max-width:500px;">
+      <button class="cbtn" onclick="document.getElementById('mc').innerHTML=''">&#10005;</button>
+      <div class="mtitle">All injects — ${d}</div>
+      ${rel.map(inj=>`<div style="background:var(--s2);border-radius:4px;padding:5px 8px;margin-bottom:4px;border-left:3px solid ${STCOL[inj.status]};cursor:pointer;" onclick="document.getElementById('mc').innerHTML='';showModal('${inj.n}')">
+        <div style="font-size:9px;color:var(--muted);">#${inj.n} · ${inj.type} · ${inj.t}</div>
+        <div style="font-size:11px;color:var(--text);">${inj.desc}</div>
+        <div style="font-size:9px;color:${STCOL[inj.status]};margin-top:2px;">${inj.status}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderSBS(){
+  const open=injects.filter(i=>i.status!=='Completed');
+  const ip=open.filter(i=>i.status==='In Progress').slice(0,4);
+  const nxt=open.filter(i=>i.status==='New'||i.status==='Acknowledged').slice(0,4);
+  const em=[];
+  if(open.some(i=>i.type==='weather'))em.push({t:'NWS/NOAA weather updates pending',c:'var(--amber)'});
+  if(open.some(i=>i.type==='modal'))em.push({t:'Modal: freight + transit + airport ongoing',c:'#9d7fd4'});
+  if(injects.some(i=>i.notes&&i.notes.includes('No response from D3')))em.push({t:'D3: no SitRep response — follow up',c:'var(--red)'});
+  if(injects.some(i=>i.notes&&i.notes.includes('DxxEOC')))em.push({t:'Not all districts using DxxEOC emails',c:'var(--amber)'});
+
+  document.getElementById('panel-now').innerHTML=`
+    <div class="sbs-lbl"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0;"></span>Now — in progress</div>
+    ${ip.length?ip.map(i=>`<div class="nne-item"><div class="nne-dot" style="background:var(--red);"></div><div><div class="nne-t">${i.desc.slice(0,50)}${i.desc.length>50?'...':''}</div><div class="nne-d">${i.district} · ${i.ctrl}</div></div></div>`).join(''):'<div style="font-size:10px;color:var(--muted);">None active</div>'}`;
+
+  document.getElementById('panel-next').innerHTML=`
+    <div class="sbs-lbl"><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);display:inline-block;flex-shrink:0;"></span>Next — queued</div>
+    ${nxt.length?nxt.map(i=>`<div class="nne-item"><div class="nne-dot" style="background:var(--blue);"></div><div><div class="nne-t">${i.desc.slice(0,50)}${i.desc.length>50?'...':''}</div><div class="nne-d">${i.district} · ${i.ctrl}</div></div></div>`).join(''):'<div style="font-size:10px;color:var(--muted);">Queue clear</div>'}`;
+
+  document.getElementById('panel-emerging').innerHTML=`
+    <div class="sbs-lbl"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block;flex-shrink:0;"></span>Emerging — patterns</div>
+    ${em.length?em.map(e=>`<div class="nne-item"><div class="nne-dot" style="background:${e.c};"></div><div class="nne-t">${e.t}</div></div>`).join(''):'<div style="font-size:10px;color:var(--muted);">No patterns</div>'}`;
+
+  const feedHtml=feed.length?feed.slice(0,14).map(f=>`<div class="fitem"><div class="ftime">${f.t}</div><div class="fbar" style="background:${f.col};"></div><div class="ftext">${f.msg}</div></div>`).join(''):'<div style="font-size:10px;color:var(--muted);padding:4px;">Click any inject to update status</div>';
+  document.getElementById('panel-feed').innerHTML=`
+    <div class="sbs-lbl"><span style="width:6px;height:6px;border-radius:50%;background:var(--blue);display:inline-block;flex-shrink:0;"></span>Action feed <span style="color:var(--blue);margin-left:4px;">${feed.length}</span></div>
+    <div class="feedscroll">${feedHtml}</div>`;
+}
+
+function render(){
+  const open=injects.filter(i=>i.status!=='Completed').length;
+  const done=injects.filter(i=>i.status==='Completed').length;
+  document.getElementById('t-open').textContent=open;
+  document.getElementById('t-done').textContent=done;
+
+  const alerts=[];
+  if(injects.some(i=>i.type==='weather'&&i.status!=='Completed'))alerts.push('Weather updates pending — NWS/NOAA monitoring active');
+  if(injects.some(i=>i.type==='modal'&&i.status!=='Completed'))alerts.push('Modal coordination in progress');
+  if(injects.some(i=>i.notes&&i.notes.includes('No response from D3')))alerts.push('D3: no SitRep response — follow up required');
+  document.getElementById('alert-text').textContent=alerts.length?alerts.join(' · '):'DEACTIVATED — EndEx 12:00 · '+done+' of '+injects.length+' injects completed';
+
+  document.getElementById('mgrid').innerHTML=['HQ','D1','D2','D3','D4'].map(d=>renderTile(d)).join('');
+
+  renderSBS();
+
+  const total=injects.length,ip=injects.filter(i=>i.status==='In Progress').length,nw=injects.filter(i=>i.status==='New').length,pct=Math.round(done/total*100);
+  const flagged=injects.filter(i=>i.notes&&(i.notes.toLowerCase().includes('not all')||i.notes.toLowerCase().includes('no response')||i.notes.toLowerCase().includes('hot wash'))).length;
+  document.getElementById('bbar').innerHTML=`
+    <div class="bcard r"><div class="bicon">!</div><div><div class="bval">${nw}</div><div class="blbl">New</div></div></div>
+    <div class="bcard b"><div class="bicon">&#9654;</div><div><div class="bval">${ip}</div><div class="blbl">In progress</div></div></div>
+    <div class="bcard g"><div class="bicon">&#10003;</div><div><div class="bval">${done}</div><div class="blbl">Completed</div></div></div>
+    <div class="bcard p"><div class="bicon">%</div><div><div class="bval">${pct}%</div><div class="blbl">Progress</div></div></div>
+    <div class="bcard t"><div class="bicon">47</div><div><div class="bval">47</div><div class="blbl">Total injects</div></div></div>
+    <div class="bcard a"><div class="bicon">&#9888;</div><div><div class="bval">${flagged}</div><div class="blbl">Flagged</div></div></div>`;
+}
+
+setInterval(()=>{
+  const n=new Date();
+  document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');
+},1000);
+
+pushFeed('EndEx 12:00 — BURNEX 2026 Region 1 deactivated','var(--green)');
+pushFeed('#34: External Teams access — web workaround. Flagged for AAR.','var(--amber)');
+pushFeed('#46: D3 no SitRep response — flagged','var(--red)');
+pushFeed('#41/#42: GIS server delay — resolved 11:05','var(--amber)');
+pushFeed('#13: D4 drone live stream to DOC — completed','var(--green)');
+pushFeed('#16: D1 did not activate SATCOM trailer — noted','var(--amber)');
+pushFeed('Hot wash complete — AAR due November 15, 2026','var(--blue)');
+render();
+</script>
